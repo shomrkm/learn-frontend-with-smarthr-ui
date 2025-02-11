@@ -1,4 +1,4 @@
-import { Cluster, Heading, Loader, PageHeading, Stack, Text } from 'smarthr-ui';
+import { Cluster, Loader, PageHeading, Stack, Text } from 'smarthr-ui';
 import styled from 'styled-components';
 
 import { useUsers } from './api/useUsers';
