@@ -23,7 +23,7 @@ async function main() {
       { name: 'Alice', email: 'alice@example.com', jobTitleId: 1 },
       { name: 'Bob', email: 'bob@example.com', jobTitleId: 2 },
       { name: 'Charlie', email: 'charlie@example.com', jobTitleId: 3 },
-      { name: 'Dave', email: 'dave@example.com' }, // Example of user without jobTitle
+      { name: 'Dave', email: 'dave@example.com', jobTitleId: 4 },
     ],
   });
 
