@@ -23,16 +23,25 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { name, email } = req.body;
+  try {
+    const { name, email, jobTitle } = req.body;
 
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-    },
-  });
+    if (!name || !email || !jobTitle) {
+      return res.status(400).json({ ok: false, error: 'Name and email are required' });
+    }
 
-  res.json(user);
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        jobTitleId: jobTitle,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ ok: false, error: 'Internal Server Error', hint: error });
+  }
 });
 
 

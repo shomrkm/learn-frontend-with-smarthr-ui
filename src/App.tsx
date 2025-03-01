@@ -1,35 +1,62 @@
-import { Cluster, Loader, PageHeading, Stack, Text } from 'smarthr-ui';
-import styled from 'styled-components';
+import { ComponentProps, ReactNode, useState } from 'react';
+import { Button, FormControl, Input, ResponseMessage, Select, Stack } from 'smarthr-ui';
 
-import { useUsers } from './api/useUsers';
 import './App.css'
+import { useAddUser } from './api/useAddUser';
+import { useJobTitles } from './api/useJobTitles';
 
-function App() {
-  const { data } = useUsers();
-
-  if (!data) {
-    return <Loader />
-  }
-
-  return (
-    <Stack>
-      <PageHeading>ユーザー一覧</PageHeading>
-      <StyledStack gap={0.5} align='center'>
-        {data.map((user) => (
-          <Cluster key={user.id} align='center'>
-            <Text>{user.name}</Text>
-            <Text>{user.email}</Text>
-          </Cluster>
-        ))}
-      </StyledStack>
-    </Stack>
-  )
+type Message = {
+  type: ComponentProps<typeof ResponseMessage>['type'];
+  message: ReactNode;
 }
 
-const StyledStack = styled(Stack)`
-  background-color: #f0f0f0;
-  padding: 16px;
-  border-radius: 8px;
-`
+function App() {
+  const [message, setMessage] = useState<Message>();
+
+  const { trigger: addUser, isMutating } = useAddUser({
+    options: {
+      onSuccess: () => setMessage({type: 'success', message: 'User added successfully'}),
+      onError: () => setMessage({type: 'error', message: 'Failed to add user'}),
+    }
+  });
+
+  const { data: jobTitles } = useJobTitles();
+  console.log(jobTitles);
+  
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string
+    const email = formData.get('email') as string
+    const jobTitle = formData.get('job_title')
+    await addUser({ name, email, jobTitle: Number(jobTitle) });
+  };
+
+  return (
+      <form onSubmit={onSubmit}>
+        <Stack align='center' gap={2}>
+          <Stack align={'start'}>
+            <FormControl title="Name" statusLabelProps={{type: 'red', children: '必須'}}>
+              <Input name='name' type='text' required onClick={(e) => e.preventDefault()} />
+            </FormControl>
+            <FormControl title="Email" >
+              <Input name='email' type='email' onClick={(e) => e.preventDefault()} />
+            </FormControl>
+            <FormControl title="Job Title">
+              <Select name='job_title' onClick={(e) => e.preventDefault()} options={jobTitles?.map(jb=>({
+                value: jb.id.toString(),
+                label: jb.title,
+              })) ?? [] as { value: string; label: string }[]}
+            />
+            </FormControl>
+          </Stack>
+          <Button type='submit' variant="primary" disabled={isMutating}>Submit</Button>
+          { message && <ResponseMessage type={message.type}>{message.message}</ResponseMessage> }
+        </Stack>
+      </form>
+  )
+}
 
 export default App;

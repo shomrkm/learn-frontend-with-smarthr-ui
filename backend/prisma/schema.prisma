@@ -17,4 +17,19 @@ model User {
   id       Int      @id @default(autoincrement())
   name     String
   email    String   @unique
+  jobTitleId Int?
+  jobTitle   jobTitle? @relation(fields: [jobTitleId], references: [id])
+}
+
+model jobTitle {
+  id       Int      @id @default(autoincrement())
+  title    JobTitle
+  users    User[]
+}
+
+enum JobTitle {
+  Developer
+  Designer
+  ProductManager
+  QA
 }
