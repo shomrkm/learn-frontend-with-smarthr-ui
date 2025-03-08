@@ -21,7 +21,6 @@ function App() {
   });
 
   const { data: jobTitles } = useJobTitles();
-  console.log(jobTitles);
   
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +36,7 @@ function App() {
   return (
       <form onSubmit={onSubmit}>
         <Stack align='center' gap={2}>
-          <Stack align={'start'}>
+          <Stack align='start'>
             <FormControl title="Name" statusLabelProps={{type: 'red', children: '必須'}}>
               <Input name='name' type='text' required onClick={(e) => e.preventDefault()} />
             </FormControl>

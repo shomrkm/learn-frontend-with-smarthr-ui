@@ -1,9 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createTheme, ThemeProvider } from 'smarthr-ui'
+import 'smarthr-ui/smarthr-ui.css'
+import './index.css'
 
 import App from './App.tsx'
-import 'smarthr-ui/smarthr-ui.css'
 
 const theme = createTheme()
 
