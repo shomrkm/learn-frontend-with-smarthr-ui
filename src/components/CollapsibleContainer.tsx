@@ -4,20 +4,20 @@ import { Button, FaAngleDownIcon, FaAngleUpIcon  } from 'smarthr-ui'
 import { rgba } from 'polished'
 
 export type Props = {
-  /** Maximum height when collapsed */
+  /** 折りたたまれた状態での最大の高さ */
   height: string
-  /** Content to be displayed */
+  /** 表示するコンテンツ */
   children: ReactNode
-  /** Custom gradient colors for the overlay */
+  /** トグルエリアのカスタム色 */
   toggleAreaColor?: string
-  /** Custom text for expand/collapse button */
+  /** すべて表示/折りたたむボタンのカスタムテキスト */
   buttonLabels?: {
     expand: string
     collapse: string
   }
-  /** Initial expanded state */
+  /** 初期状態で展開するかどうか */
   defaultExpanded?: boolean
-  /** Callback when expand/collapse state changes */
+  /** すべて表示/折りたたむ状態が変更された時のコールバック */
   onExpandChange?: (isExpanded: boolean) => void
 }
 
@@ -81,7 +81,7 @@ const GradientOverlay = styled.div<{ isExpanded: boolean, color: string}>`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${(isExpanded) => (isExpanded ? '3rem' : '72px')};
+  height: ${(isExpanded) => (isExpanded ? '3rem' : '4.5rem')};
   background: ${({ isExpanded, color }) =>
     isExpanded
       ? color
@@ -117,7 +117,7 @@ const ButtonContainer = styled.div`
   pointer-events: none;
   background-color: 'inherit';
 
-  /* Enable pointer events for the button itself */
+  /* ボタン自体のポインターイベントを有効にする */
   & > button {
     pointer-events: auto;
   }
