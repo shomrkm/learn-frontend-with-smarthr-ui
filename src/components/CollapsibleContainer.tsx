@@ -1,9 +1,9 @@
-import {  ReactNode, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from 'smarthr-ui'
+import { Button, FaAngleDownIcon, FaAngleUpIcon  } from 'smarthr-ui'
 import { rgba } from 'polished'
 
-export type CollapsibleContainerProps = {
+export type Props = {
   /** Maximum height when collapsed */
   height: string
   /** Content to be displayed */
@@ -12,8 +12,8 @@ export type CollapsibleContainerProps = {
   toggleAreaColor?: string
   /** Custom text for expand/collapse button */
   buttonLabels?: {
-    expand: ReactNode
-    collapse: ReactNode
+    expand: string
+    collapse: string
   }
   /** Initial expanded state */
   defaultExpanded?: boolean
@@ -23,19 +23,19 @@ export type CollapsibleContainerProps = {
 
 const defaultButtonLabels = {
   expand: 'すべて表示',
-  collapse: '隠す'
+  collapse: '折りたたむ'
 }
 
 const DEFAULT_COLOR = '#D6D3D0'
 
-export const CollapsibleContainer = ({
+export const CollapsibleContainer: FC<Props> = ({
   height,
   children,
   toggleAreaColor = DEFAULT_COLOR,
   buttonLabels = defaultButtonLabels,
   defaultExpanded = false,
   onExpandChange
-}: CollapsibleContainerProps) => {
+}) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
   const toggleExpand = () => {
@@ -53,7 +53,9 @@ export const CollapsibleContainer = ({
         <Button
           variant="secondary"
           size="s"
-          onClick={() => { toggleExpand() }} >
+          onClick={() => { toggleExpand() }}
+          prefix={isExpanded ? <FaAngleUpIcon /> : <FaAngleDownIcon />}
+          >
           {isExpanded ? buttonLabels.collapse : buttonLabels.expand}
         </Button>
       </ButtonContainer>
