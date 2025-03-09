@@ -20,6 +20,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      polished:
+        specifier: ^4.3.1
+        version: 4.3.1
       postcss:
         specifier: ^8.5.1
         version: 8.5.1

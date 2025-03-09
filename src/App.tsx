@@ -4,6 +4,7 @@ import { Button, FormControl, Input, ResponseMessage, Select, Stack } from 'smar
 import './App.css'
 import { useAddUser } from './api/useAddUser';
 import { useJobTitles } from './api/useJobTitles';
+import { CollapsibleContainer } from './components/CollapsibleContainer';
 
 type Message = {
   type: ComponentProps<typeof ResponseMessage>['type'];
@@ -20,6 +21,7 @@ function App() {
     }
   });
 
+
   const { data: jobTitles } = useJobTitles();
   
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +36,8 @@ function App() {
   };
 
   return (
-      <form onSubmit={onSubmit}>
+    <CollapsibleContainer height='200px' toggleAreaColor='#D6D3D0'>
+      <form onSubmit={onSubmit} style={{ backgroundColor: '#D6D3D0', padding: '1rem' }}>
         <Stack align='center' gap={2}>
           <Stack align='start'>
             <FormControl title="Name" statusLabelProps={{type: 'red', children: '必須'}}>
@@ -55,6 +58,7 @@ function App() {
           { message && <ResponseMessage type={message.type}>{message.message}</ResponseMessage> }
         </Stack>
       </form>
+    </CollapsibleContainer>
   )
 }
 
