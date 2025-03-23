@@ -8,29 +8,29 @@ export const Layouts = () => {
       <Text>Stack, Cluster を使ったレイアウト例</Text>
       <Stack>
         <Text weight="bold">横並び</Text>
-        <GrayBase>
+        <StyledBase>
           <Cluster>
             <Text>テスト1</Text>
             <Text>テスト2</Text>
             <Text>テスト3</Text>
           </Cluster>
-        </GrayBase>
+        </StyledBase>
       </Stack>
       <Stack>
         <Text weight="bold">横並び(右寄せ)</Text>
-        <GrayBase>
+        <StyledBase>
           <Cluster>
             <Text>テスト1</Text>
             <Text>テスト2</Text>
             <RightAlignText>テスト3</RightAlignText>
           </Cluster>
-        </GrayBase>
+        </StyledBase>
       </Stack>
     </Stack>
   )
 }
 
-const GrayBase = styled(Base)`
+const StyledBase = styled(Base)`
   padding: ${({ theme }) => theme.space(2)};
   border-radius : ${({ theme }) => theme.radius.m};
 `
