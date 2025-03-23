@@ -1,61 +1,27 @@
-import { ComponentProps, ReactNode, useState } from 'react';
-import { Button, FormControl, Input, ResponseMessage, Select, Stack } from 'smarthr-ui';
+import { ThemeProvider } from 'styled-components'
+import { createTheme } from 'smarthr-ui'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import { Home } from './pages/Home'
+import { Messages } from './pages/Messages'
+import { Layouts } from './pages/Layouts'
 
-import './App.css'
-import { useAddUser } from './api/useAddUser';
-import { useJobTitles } from './api/useJobTitles';
-
-type Message = {
-  type: ComponentProps<typeof ResponseMessage>['type'];
-  message: ReactNode;
-}
+const theme = createTheme()
 
 function App() {
-  const [message, setMessage] = useState<Message>();
-
-  const { trigger: addUser, isMutating } = useAddUser({
-    options: {
-      onSuccess: () => setMessage({type: 'success', message: 'User added successfully'}),
-      onError: () => setMessage({type: 'error', message: 'Failed to add user'}),
-    }
-  });
-
-  const { data: jobTitles } = useJobTitles();
-  
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get('name') as string
-    const email = formData.get('email') as string
-    const jobTitle = formData.get('job_title')
-    await addUser({ name, email, jobTitle: Number(jobTitle) });
-  };
-
   return (
-      <form onSubmit={onSubmit}>
-        <Stack align='center' gap={2}>
-          <Stack align='start'>
-            <FormControl title="Name" statusLabelProps={{type: 'red', children: '必須'}}>
-              <Input name='name' type='text' required onClick={(e) => e.preventDefault()} />
-            </FormControl>
-            <FormControl title="Email" >
-              <Input name='email' type='email' onClick={(e) => e.preventDefault()} />
-            </FormControl>
-            <FormControl title="Job Title">
-              <Select name='job_title' onClick={(e) => e.preventDefault()} options={jobTitles?.map(jb=>({
-                value: jb.id.toString(),
-                label: jb.title,
-              })) ?? [] as { value: string; label: string }[]}
-            />
-            </FormControl>
-          </Stack>
-          <Button type='submit' variant="primary" disabled={isMutating}>Submit</Button>
-          { message && <ResponseMessage type={message.type}>{message.message}</ResponseMessage> }
-        </Stack>
-      </form>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/layout" element={<Layouts />} />
+            <Route path="/messages" element={<Messages />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
-export default App;
+export default App
